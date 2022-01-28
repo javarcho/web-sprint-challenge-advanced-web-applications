@@ -1,17 +1,85 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import axiosWithAuth from "../helpers/axiosWithAuth";
 
 const Login = () => {
-    
-    return(<ComponentContainer>
-        <ModalContainer>
-            <h1>Welcome to Blogger Pro</h1>
-            <h2>Please enter your account information.</h2>
-        </ModalContainer>
-    </ComponentContainer>);
-}
+  // make a post request to retrieve a token from the api
+  // when you have handled the token, navigate to the BubblePage route
+  const { push } = useHistory();
+  const [formValues, setFormValues] = useState(initialValues);
+  const [error, setError] = useState();
+
+  const handleChange = e => {
+    setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const submitHandler = e => {
+    e.preventDefault();
+    if (formValues.username !== 'Lambda' || formValues.password !== 'School') {
+      setError('Username or Password incorrect')
+    }
+
+    axiosWithAuth()
+      .post('/api/login', formValues)
+      .then((res) => {
+        console.log("Axios Login Post", res)
+        localStorage.setItem('token', res.data.payload)
+        push('/bubblepage')
+      })
+      .catch((err) => {
+        console.log({ err })
+      })
+  }
+
+  return (
+    <div>
+      <h1>Welcome to the Bubble App!</h1>
+      <div data-testid="loginForm" className="login-form">
+        <h2>Build login form here</h2>
+      </div>
+      <div>
+        <form onSubmit={submitHandler}>
+          <label htmlFor="username">
+            Username
+          </label><br/>
+          <input
+            id="username"
+            data-testid="username"
+            name="username"
+            value={formValues.username}
+            onChange={handleChange}
+          /><br/><br/>
+
+          <label htmlFor="password">
+            Password
+          </label><br/>
+          <input
+            id="password"
+            data-testid="password"
+            name="password"
+            value={formValues.password}
+            onChange={handleChange}
+          /><br/>
+
+          <button>Login</button>
+
+        </form>
+      </div>
+
+      <p id="error" className="error">{error}</p>
+    </div>
+  );
+};
 
 export default Login;
+
+const initialValues = {
+  username: '',
+  password: ''
+}
 
 //Task List
 //1. Build login form DOM from scratch, making use of styled components if needed. Make sure the username input has id="username" and the password input as id="password".

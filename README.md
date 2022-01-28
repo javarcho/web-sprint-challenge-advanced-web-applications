@@ -118,8 +118,20 @@ Be prepared to demonstrate your understanding of this week's concepts by answeri
 
 1. Explain what a token is used for.
 
+tokens are strings used for authentication and are usually assigned when making login posts or requests with apis
+
 2. What steps can you take in your web apps to keep your data secure?
+
+using routes and authentication tokens, it makes sure that users are accessing the correct areas of the application
 
 3. Describe how web servers work.
 
+they are containers for code in a website
+
 4. Which HTTP methods can be mapped to the CRUD acronym that we use when interfacing with APIs/Servers.
+
+create/POST
+delete/DELETE
+read/GET
+update/PUT
+
